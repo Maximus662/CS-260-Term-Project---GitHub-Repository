@@ -9,8 +9,7 @@ using namespace std;
 //This takes customer information (name, address, email, phone)
 class Customer {
 private:
-	string fname, lname, address, email;
-	double phone;
+	string fname, lname, address, email, phone;
 public:
 	//default
 	Customer()
@@ -19,9 +18,9 @@ public:
 		lname = "";
 		address = "";
 		email = "";
-		phone = 0;
+		phone = "";
 	}
-	Customer(string _fname, string _lname, string _address, string _email, double _phone)
+	Customer(string _fname, string _lname, string _address, string _email, string _phone)
 	{
 		fname = _fname;
 		lname = _lname;
@@ -29,7 +28,7 @@ public:
 		email = _email;
 		phone = _phone;
 	}
-	void setCustomer(string _fname, string _lname, string _address, string _email, double _phone)
+	void setCustomer(string _fname, string _lname, string _address, string _email, string _phone)
 	{
 		fname = _fname;
 		lname = _lname;
@@ -56,16 +55,44 @@ public:
 	{
 		email = _email;
 	}
-	void setPhone(double _phone)
+	bool isValidPhone(string _phone)
 	{
-		if (_phone >= 0)
+		// Check if all characters in the string are digits
+		for (char digit : _phone)
 		{
-			phone = _phone;
+			if (!isdigit(digit))
+			{
+				return false;
+			}
+		}
+		//checks length 
+		if (_phone.length() != 10)
+		{
+			return false;
 		}
 		else
 		{
-			cout << "You did not enter a valid phone number, please try again and enter your 10 digit phone number." << endl;
-			cout << "=========================================================================================================" << endl << endl;
+			return true;
+		}
+	}
+	void setPhone(string _phone)
+	{
+		bool valid = isValidPhone(_phone);
+		if (valid == true)
+		{
+			phone = _phone;
+			cout << "phone valid";
+		}
+		else
+		{
+			while (valid != true)
+			{
+				cout << "You did not enter a valid phone number, please try again and enter your 10 digit phone number without - or ()." << endl;
+				cout << "Enter phone number: ";
+				cin >> _phone;
+				valid = isValidPhone(_phone);
+			}
+			phone = _phone;
 		}
 	}
 
@@ -86,7 +113,7 @@ public:
 	{
 		return email;
 	}
-	double getPhone() const
+	string getPhone() const
 	{
 		return phone;
 	}
@@ -101,6 +128,10 @@ public:
 		cout << "Phone Number: " << phone << endl;
 	}
 };
+
+//makes an account(ID and balance) with the customers information
+//also withdraw and deposit 
+//has Customer accountCustomer
 
 //makes an account(ID and balance) with the customers information
 //also withdraw and deposit 
@@ -122,7 +153,7 @@ public:
 		balance = 0;
 	}
 
-	Account(string _fname, string _lname, string _address, string _email, double _phone, int _ID, double _balance) : Customer(_fname, _lname, _address, _email, _phone)
+	Account(string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance) : Customer(_fname, _lname, _address, _email, _phone)
 	{
 		if(isdigit(_ID) && _ID > 0)
 			ID = _ID;
@@ -147,7 +178,7 @@ public:
 		//accountCustomer.setCustomer() idr how to do this
 	}
 	//setter
-	void setAccount(string _fname, string _lname, string _address, string _email, double _phone, int _ID, double _balance)
+	void setAccount(string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance)
 	{
 		setCustomer(_fname, _lname, _address, _email, _phone);
 		if (isdigit(_ID) && _ID > 0)
@@ -188,6 +219,10 @@ public:
 	double getBalance() const
 	{
 		return balance;
+	}
+	int getID()  const
+	{
+		return ID;
 	}
 	//Functions
 	void withdrawal(double _withdrawalAmmount)
@@ -252,7 +287,7 @@ public:
 		overDraftLimit = 0;
 
 	}
-	CheckingAccount(string _fname, string _lname, string _address, string _email, double _phone, int _ID, double _balance, double _overDraftLimit) : Account(_fname, _lname, _address, _email, _phone, _ID, _balance)
+	CheckingAccount(string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance, double _overDraftLimit) : Account(_fname, _lname, _address, _email, _phone, _ID, _balance)
 	{
 		overDraftLimit = _overDraftLimit;
 	}
@@ -316,20 +351,24 @@ public:
 	{
 		interestRate = 0;
 	}
-	SavingAccount(string _fname, string _lname, string _address, string _email, double _phone, int _ID, double _balance, double _interestRate)
+	SavingAccount(string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance, double _interestRate)
 	{
-		accountCustomer.setCustomer(_fname, _lname, _address, _email, _phone);
-
-		interestRate = _interestRate;
+		if (interestRate < 1 && interestRate >= 0) //Checks to see if interestRate is valid percentage 
+		{
+			interestRate = _interestRate;
+			accountCustomer.setCustomer(_fname, _lname, _address, _email, _phone);
+		}
+		else
+		{
+			cout << "Invalid interest rate. Your inputted interest rate must be between 1 and 0. This represents the percent interest that will be mutiplied in your savings account. Please try again." << endl;
+			return;
+		}
 	}
 	double payInterest()
 	{
-		//somehow get that balance from Account 
-		// 
-		//double interest = interestRate * Account:getBalance();
+		double interest = interestRate * Account::getBalance();
 	}
 };
-//
 
 class menu : public Account
 {
@@ -358,9 +397,9 @@ class createAccount : public Account
 		return choice;
 	}
 	static void createCheckingAccount() {
-		int id, phone;
+		int id;
 		double bal;
-		string fName, lName, addr, email;
+		string fName, lName, addr, email, phone;
 
 		cout << "Enter Account ID: ";
 		cin >> id;
@@ -387,9 +426,9 @@ class createAccount : public Account
 	}
 
 	static void createSavingAccount() {
-		int id, phone;
+		int id;
 		double bal, rate;
-		string fName, lName, addr, email;
+		string fName, lName, addr, email, phone;
 
 		cout << "Enter Account ID: ";
 		cin >> id;
@@ -440,12 +479,14 @@ class createAccount : public Account
 	{
 		//string _fname, string _lname, string _address, string _email, double _phone, int _ID, double _balance
 		// array for number of accounts 
-		Account account[20];
+		int size = 2;
+		Account * account = new Account[size];
+		string username, password;
 
 		//Account account("alana", "lucas", "3547 Shres Dr", "alana@gmail", 9045984902, 1, 100);
 		//hard code an account
-		account[0].setAccount("alana", "lucas", "3547 Shres Dr", "alana@gmail", 9045984902, 1, 100);
-		account[1].setAccount("maximus", "adversalo", "736 Killebrew Way", "adversalom@gmail", 9165450572, 2, 1000);
+		account[0].setAccount("alana", "lucas", "3547 Shres Dr", "alana@gmail", "9045984902", 1, 100);
+		account[1].setAccount("maximus", "adversalo", "736 Killebrew Way", "adversalom@gmail", "9165450572", 2, 1000);
 
 		int option;
 		cout << "1. Log in " << endl;
@@ -453,7 +494,7 @@ class createAccount : public Account
 		//using files????
 		// we can add accounts username and password to save account information 
 		cin >> option;
-		if (option != 1 || 2)
+		if (option != 1 || option != 2)
 		{
 			cout << "Not a valid option" << endl;
 			cout << "Log in (L) or Create account (C)";
@@ -476,12 +517,11 @@ class createAccount : public Account
 		else if (option == 2)
 		{
 			//create class to create accputn 
-			string username, password;
 			cout << "Enter username: ";
 			cin >> username;
 			cout << "Enter password: ";
 			cin >> password;
-
+			size++;
 			registerUser(username, password);
 		}
 
@@ -491,12 +531,44 @@ class createAccount : public Account
 		cout << "3. Exit" << endl;
 		cin >> option;
 
-		//either create options to select saving withdraw or cheicking or create a do while to display  
+		//either create options to select saving withdraw or checking or create a do while to display  
 		if (option == 1)
 		{
 			//call saving account
 			// create menu with options 
-			//deposit, withdraw, view account,  
+			//deposit, withdraw, view account, 
+			int savingsChecker;
+			int i = 0;
+			cout << "To gain access to your savings account, please enter your account number: ";
+			cin >> savingsChecker;
+			for (int i; i < size; i++)
+			{
+				if (savingsChecker == account[i].getID())
+				{
+					cout << "Your account has been found..." << endl;
+					break;
+				}
+			}
+			cout << "1. Deposit" << endl;
+			cout << "2. Withdraw" << endl;
+			cout << "3. View Account" << endl;
+			cout << "4. Exit" << endl;
+			cout << "Please enter a number decision according to where you would like to me navigated: ";
+			cin >> option;
+			
+			if (option == 1)
+			{
+				double withdrawlAmmount;
+				cout << "You have chosen :WITHDRAW:" << endl;
+				cout << "PLease enter how much you would like to withdraw: $";
+				cin >> withdrawlAmmount;
+				savingsAccount[i].withdraw(withdrawlAmmount);
+			}
+			else if (option == 2)
+			{
+
+			}
+
 		}
 		else if (option == 2)
 		{
