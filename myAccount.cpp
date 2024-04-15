@@ -112,7 +112,7 @@ void Account::printInfo()
 {
 	cout << "Name" << setw(20) << "Account ID Number" << setw(20) << "Balance" << endl;
 
-	cout << Customer::getFname() << setw(20) << getID() << setw(20) << getBalance() << endl;
+	cout << getFname() << setw(20) << getID() << setw(20) << getBalance() << endl;
 }
 
 
