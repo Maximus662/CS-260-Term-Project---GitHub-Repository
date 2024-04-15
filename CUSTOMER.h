@@ -6,9 +6,10 @@
 #include <cctype>
 #include <ostream>
 #include<ctime>
+#include"CUSTOMER.h"
 using namespace std;
 
-#ifndef MYCUSOMER_H
+#ifndef MYCUSTOMER_H
 #define MYCUSTOMER_H
 
 class Customer
