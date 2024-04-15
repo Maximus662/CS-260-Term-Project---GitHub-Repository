@@ -9,8 +9,8 @@
 #include"CUSTOMER.h"
 using namespace std;
 
-#ifndef MYCUSTOMER_H
-#define MYCUSTOMER_H
+#ifndef CHECKINGACCOUNT_H
+#define CHECKINGACCOUNT_H
 
 class CheckingAccount : public Account {
 private:
@@ -26,4 +26,4 @@ public:
 	void depositChecking();
 };
 
-#endif //!MYCUSTOMER_H
+#endif //!CHECKINGACCOUNT_H
