@@ -9,8 +9,8 @@
 #include"CUSTOMER.h"
 using namespace std;
 
-#ifndef MYCUSTOMER_H
-#define MYCUSTOMER_H
+#ifndef SAVINGACCOUNT_H
+#define SAVINGACCOUNT_H
 
 class SavingAccount : public Account {
 private:
@@ -26,4 +26,4 @@ public:
 	void printInfo();
 };
 
-#endif //!MYCUSTOMER_H
+#endif //!SAVINGACCOUNT_H
