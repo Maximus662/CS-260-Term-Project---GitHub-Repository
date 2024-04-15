@@ -15,10 +15,13 @@ using namespace std;
 class SavingAccount : public Account {
 private:
 	double interestRate;
+	Account* accountCustomer;
+
 public:
+
 	//Constructors
-	SavingAccount() :Account();
-	SavingAccount(string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance, double _interestRate);
+	SavingAccount(): Account() {};
+	SavingAccount(Account* accountCustomer, string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance, double _interestRate);
 
 	//Functions
 	void depositSaving();
