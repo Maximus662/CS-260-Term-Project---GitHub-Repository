@@ -15,10 +15,11 @@ using namespace std;
 class CheckingAccount : public Account {
 private:
 	double overDraftLimit;
+	Account* accountCustomer;
 
 public:
-	CheckingAccount() :Account();
-	CheckingAccount(string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance, double _overDraftLimit) : Account(_fname, _lname, _address, _email, _phone, _ID, _balance);
+	CheckingAccount() :Account() {};
+	CheckingAccount(Account* accountCustomer, string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance, double _overDraftLimit) : Account(_fname, _lname, _address, _email, _phone, _ID, _balance) {};
 	void setOverDraftLimit(double _overDraftLimit);
 
 	//over load
