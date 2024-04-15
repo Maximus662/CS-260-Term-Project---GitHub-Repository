@@ -9,22 +9,21 @@
 #include"CUSTOMER.h"
 using namespace std;
 
-#ifndef MYCUSTOMER_H
-#define MYCUSTOMER_H
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
 
-class Account : public Customer {
+class Account  {
 private:
 	int ID;
 	double balance;
-
-protected:
 	Customer accountCustomer;
+
 
 public:
 	int withdrawals = 0;
 	int deposits = 0;
 	//default
-	Account() :Customer();
+	Account();
 
 	Account(string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance);
 	//setter
@@ -36,23 +35,14 @@ public:
 	Account operator++();//post-fix
 
 	//getter
-	int getWithdrawals()const
-	{
-		return withdrawals;
-	}
-	double getBalance() const
-	{
-		return balance;
-	}
-	int getID() const
-	{
-		return ID;
-	}
+	int getWithdrawals()const;
+	double getBalance() const;
+	int getID() const;
 	//Functions
 	void withdrawal(double _withdrawalAmmount);
 	void deposit(double _depositAmmount);
 	void printInfo();
 
 };
-#endif // !MYACCOUNT_H
+#endif // !ACCOUNT_H
 
