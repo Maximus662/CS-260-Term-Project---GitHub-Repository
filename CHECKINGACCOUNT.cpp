@@ -1,4 +1,5 @@
 #include"ACCOUNT.h"
+#include"CHECKINGACCOUNT.h"
 
 using namespace std;
 
@@ -6,17 +7,17 @@ CheckingAccount::CheckingAccount() :Account()
 {
 	overDraftLimit = 0;
 }
-CheckingAccount(string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance, double _overDraftLimit) : Account(_fname, _lname, _address, _email, _phone, _ID, _balance)
+CheckingAccount::CheckingAccount(Account* accountCustomer, string _fname, string _lname, string _address, string _email, string _phone, int _ID, double _balance, double _overDraftLimit) : Account(_fname, _lname, _address, _email, _phone, _ID, _balance)
 {
 	overDraftLimit = _overDraftLimit;
 }
-void setOverDraftLimit(double _overDraftLimit)
+void CheckingAccount::setOverDraftLimit(double _overDraftLimit)
 {
 	overDraftLimit = _overDraftLimit;
 }
 
 //over load
-void withdrawal(double _withdrawalAmount)
+void CheckingAccount::withdrawal(double _withdrawalAmount)
 {
 	if ((getBalance()) < 0)
 	{
@@ -61,7 +62,7 @@ void withdrawal(double _withdrawalAmount)
 		cout << "Please try again." << endl;
 	}
 }
-void depositChecking()
+void CheckingAccount::depositChecking()
 {
 	double depositAmmount = 0;
 	cout << "Your current balance is: $" << Account::getBalance() << endl;
@@ -79,4 +80,3 @@ void depositChecking()
 		cout << "Please try again!" << endl;
 	}
 }
-};
